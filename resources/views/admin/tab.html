@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../../../public/css/ch-ui.admin.css">
+	<link rel="stylesheet" href="../../../public/css/font-awesome.min.css">
+    <script type="text/javascript" src="../../../public/js/jquery.js"></script>
+    <script type="text/javascript" src="../../../public/js/ch-ui.admin.js"></script>
+</head>
+<body>
+    <!--麵包屑導航 開始-->
+    <div class="crumb_warp">
+        <!--<i class="fa fa-bell"></i> 歡迎使用登入網站後台，建站的首選工具。-->
+        <i class="fa fa-home"></i> <a href="#">首頁</a> &raquo; <a href="#">商品管理</a> &raquo; 添加商品
+    </div>
+    <!--麵包屑導航 结束-->
+    
+	<!--TAB切換面板和外置按鈕組 開始-->
+	<div class="result_wrap">
+        <div class="result_title">
+            <h3>快速操作</h3>
+            <div class="mark">
+                <p>URL地址:http://bbs.houdunwang.com</p>
+            </div>
+        </div>
+        <div class="result_content">
+            <div class="short_wrap">
+                <a href="#"><i class="fa fa-plus"></i>新增文章</a>
+                <a href="#"><i class="fa fa-recycle"></i>批次删除</a>
+                <a href="#"><i class="fa fa-refresh"></i>更新排序</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="result_wrap">
+        <ul class="tab_title">
+            <li class="active">基本資料</li>
+            <li>商品圖集</li>
+            <li>商品規格</li>
+            <li>詳細描述</li>
+            <li>售後服務</li>
+        </ul>
+        <div class="tab_content">基本資料</div>
+        <div class="tab_content">商品圖集</div>
+        <div class="tab_content">
+            <table class="add_tab">
+                <tr>
+                    <th width="120">商品規格</th>
+                    <td><button onclick="add_attr(this)">添加規格组</button></td>
+                </tr>
+
+                <!-- <tr>
+                    <th width="120"></th>
+                    <td>
+                        <dl class="attr">
+                            <dt>規格名：<input type="text" name="attr_name[]"> <span onclick="add_attr_value(this)"><i class="fa fa-plus-circle"></i></span></dt>
+                            <dd>規格值：<input type="text" name="attr_value[]" onchange="attr_total()"></dd>
+                        </dl>
+                    </td>
+                </tr> -->
+                <tr class="attr_price" style="display:none;background:#FCF8E3;">
+                    <th width="120">組合價格</th>
+                    <td>
+                        <table class="inner_list">
+                            <tr>
+                                <th>顏色</th>
+                                <th>尺寸</th>
+                                <th>貨號</th>
+                                <th>價格</th>
+                            </tr>
+                            <tr>
+                                <td>红</td>
+                                <td>X</td>
+                                <td><input type="text" name="attr_sn[]"></td>
+                                <td><input type="text" name="attr_price[]"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="tab_content">詳細描述</div>
+        <div class="tab_content">售後服務</div>
+
+        <div class="btn_group">
+            <input type="submit" value="送出">
+            <input type="button" class="back" onclick="history.go(-1)" value="返回" >
+        </div>
+
+        <div class="tips">
+            <h3>商品規格添加問題</h3>
+            <p>1、規格分為通用規格和商品自定義規格，此處分析自定義規格</p>
+            <p>2、添加尺寸：X XL XXL 顏色：紅 黑（規格名稱，規格屬性）</p>
+            <p>3、填充组合表，记录商品id</p>
+            <p>4、點擊提交 -> 添加商品表，返回goods_id -> 添加規格表，記錄goods_id -> 添加屬性值組合表，記錄goods_id</p>
+        </div>
+    </div>
+    <!--TAB切換面板和外置按鈕組 結束-->
+    <script>
+        //點擊增加屬性框
+        function add_attr(obj){
+            var attr = '<tr>\
+                    <th width="120"></th>\
+                    <td>\
+                        <dl class="attr">\
+                            <dt>規格名：<input type="text" name="attr_name[]"> <span onclick="add_attr_value(this)"><i class="fa fa-plus-circle"></i></span></dt>\
+                            <dd>規格值：<input type="text" name="attr_value[]" onchange="attr_total(this)"></dd>\
+                        </dl>\
+                    </td>\
+                </tr>';
+            $(obj).parents('tr').eq(0).after(attr);
+        }
+
+        //點擊增加屬性值輸入框
+        function add_attr_value(obj){
+            var input = '<input type="text" name="attr_value[]" onchange="attr_total(this)">';
+            $(obj).parents('dl').find('dd').append(input);
+        }
+
+        //讀取全部屬性，重組屬性數據
+        function attr_total(obj){
+            //判斷當前屬性值有對應的屬性名稱
+            if(!$(obj).parents('dl').find('[name*=attr_name]').val()){
+                alert('請先輸入屬性名');
+                return;
+            }
+
+            var attrData = {}; //定義空對象保存屬性數據
+            var attrName = []; //規格名稱
+            var attrValue = []; //規格值
+            $('.attr').each(function(i) {
+                attrName[i] = $(this).find('[name*=attr_name]').val();
+                attrValue[i] = [];
+                //遍歷讀取所有屬性值
+                $(this).find('[name*=attr_value]').each(function(j) {
+                    attrValue[i][j] = $(this).val();
+                });
+            });
+            attrData['name'] = attrName;
+            attrData['value'] = attrValue;
+            $.post('php/attr.php',{attrData:attrData}, function(data){
+                $('.attr_price').show();
+                $('.inner_list').html(data);
+            });
+        }
+
+    </script>
+</body>
+</html>
