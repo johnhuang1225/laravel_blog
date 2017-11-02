@@ -21,9 +21,10 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 });
 
 Route::middleware(['admin.login'])->prefix('admin')->namespace('Admin')->group(function() {
-    Route::any('index', 'IndexController@index');
-    Route::any('info', 'IndexController@info');
-    Route::any('quit', 'LoginController@quit');
+    Route::get('index', 'IndexController@index');
+    Route::get('info', 'IndexController@info');
+    Route::get('quit', 'LoginController@quit');
+    Route::any('resetPassword', 'IndexController@resetPassword');
 });
 
 
@@ -48,7 +49,7 @@ Route::middleware(['admin.login'])->prefix('admin')->namespace('Admin')->group(f
 
 // Route::get('user/address/insert', function() {
 //     $address = new Address();
-//     $address->name = '台北市莊敬路452號1樓';
+//     $address->name = 'XX市xx路xxx號x樓';
 //     $john = User::find(2);
 //     $john->address()->save($address);
 //     return "OK";

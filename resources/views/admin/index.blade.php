@@ -12,8 +12,8 @@
 		</div>
 		<div class="top_right">
 			<ul>
-				<li>管理員：admin</li>
-				<li><a href="pass.html" target="main">修改密碼</a></li>
+				<li>管理員：{{session('user')->username}}</li>
+				<li><a href="{{url('admin/resetPassword')}}" target="main">修改密碼</a></li>
 				<li><a href="{{url('admin/quit')}}">登出</a></li>
 			</ul>
 		</div>
