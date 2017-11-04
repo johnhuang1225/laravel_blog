@@ -25,6 +25,8 @@ Route::middleware(['admin.login'])->prefix('admin')->namespace('Admin')->group(f
     Route::get('info', 'IndexController@info');
     Route::get('quit', 'LoginController@quit');
     Route::any('resetPassword', 'IndexController@resetPassword');
+
+    Route::resource('category', 'CategoryController');
 });
 
 
