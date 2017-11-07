@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
     <!--麵包屑導航 開始-->
     <div class="crumb_warp">
         <!--<i class="fa fa-bell"></i> 歡迎使用登入網站後台，建站的首選工具。-->
@@ -69,7 +68,7 @@
                         </td>
                         <td class="tc">{{$v->category_id}}</td>
                         <td>
-                            <a href="#">{{$v->category_name}}</a>
+                            <a href="#">{{$v->_category_name}}</a>
                         </td>
                         <td>{{$v->category_title}}</td>
                         <td>{{$v->category_views}}</td>

@@ -14,10 +14,14 @@ class CategoryController extends CommonController
      */
     public function index()
     {
-        $categorys = Category::all();
-//        dd($categorys);
-        return view('admin.category.index')->with('data', $categorys);
+//        $categorys = Category::all();
+//        $data = $this->getTree($categorys);
+//        return view('admin.category.index')->with('data', $data);
+
+        $data = (new Category)->tree();
+        return view('admin.category.index')->with('data', $data);
     }
+
 
     /**
      * Show the form for creating a new resource.

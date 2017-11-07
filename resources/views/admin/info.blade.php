@@ -49,10 +49,17 @@
                     <label>台北時間</label><span><?php echo date("Y年m月d日 H時i分s秒")?></span>
                 </li>
                 <li>
-                    <label>服務器域名/IP</label><span>{{$_SERVER['SERVER_NAME']}} [ {{$_SERVER['SERVER_ADDR']}} ]</span>
+                    <label>服務器域名/IP</label><span>{{$_SERVER['SERVER_NAME']}}</span>
                 </li>
                 <li>
-                    <label>Host</label><span>{{$_SERVER['SERVER_ADDR']}}</span>
+                    <label>Host</label>
+                    <span>
+                        @if(isset($_SERVER['SERVER_ADDR']))
+                            {{$_SERVER['SERVER_ADDR']}}
+                        @else
+                            localhost
+                        @endif
+                    </span>
                 </li>
             </ul>
         </div>
