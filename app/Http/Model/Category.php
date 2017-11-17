@@ -12,7 +12,7 @@ class Category extends Model
 
     public function tree()
     {
-        $categorys = $this::all();
+        $categorys = $this->orderBy('category_order')->get();
         $data = $this->getTree($categorys);
         return $data;
     }

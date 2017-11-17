@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Model\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class CategoryController extends CommonController
 {
@@ -87,5 +88,26 @@ class CategoryController extends CommonController
     public function destroy($id)
     {
         //
+    }
+
+
+    public function changeOrder()
+    {
+        $input = Input::all();
+        $category = Category::find($input['category_id']);
+        $category->category_order = $input['new_order'];
+        $result = $category->update();
+        if ($result) {
+            $data = [
+                'status' => 0,
+                'msg' => '分類排序更新成功',
+            ];
+        } else {
+            $data = [
+                'status' => 1,
+                'msg' => '分類排序更新失敗，請稍後重試',
+            ];
+        }
+        return $data;
     }
 }

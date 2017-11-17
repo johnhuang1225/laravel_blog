@@ -27,6 +27,8 @@ Route::middleware(['admin.login'])->prefix('admin')->namespace('Admin')->group(f
     Route::any('resetPassword', 'IndexController@resetPassword');
 
     Route::resource('category', 'CategoryController');
+
+    Route::post('category/changeOrder', 'CategoryController@changeOrder');
 });
 
 

@@ -64,7 +64,9 @@
                     <tr>
                         {{--<td class="tc"><input type="checkbox" name="id[]" value="59"></td>--}}
                         <td class="tc">
-                            <input type="text" name="ord[]" value="{{$v->category_order}}">
+                            <input type="text" name="ord[]"
+                                   value="{{$v->category_order}}"
+                                   onchange="changeOrder(this, {{$v->category_id}});">
                         </td>
                         <td class="tc">{{$v->category_id}}</td>
                         <td>
@@ -115,5 +117,25 @@
         </div>
     </form>
     <!--搜尋結果頁面 列表 結束-->
+
+    <script>
+        function changeOrder(obj, category_id) {
+            var new_order = $(obj).val();
+            $.post('{{url('admin/category/changeOrder')}}',
+                    {
+                        '_token': '{{csrf_token()}}',
+                        'category_id': category_id,
+                        'new_order': new_order,
+                    },
+                    function(data) {
+                        if (data.status == 0) { // 更新成功
+                            layer.alert(data.msg, {icon: 6});
+                        } else { // 更新失敗
+                            layer.alert(data.msg, {icon: 5});
+                        }
+                    }
+            );
+        }
+    </script>
 
 @endsection
