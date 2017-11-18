@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Model\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends CommonController
 {
@@ -31,24 +32,46 @@ class CategoryController extends CommonController
      */
     public function create()
     {
-        //
+        $categorys = Category::where('category_pid', 0)->get();
+        return view('admin.category.create', compact('categorys'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $input = Input::except('_token');
+        $rules = [
+            'category_pid' => 'required',
+            'category_name' => 'required',
+        ];
+
+        $messages = [
+            'category_pid.required' => '上層分類必選',
+            'category_name.required' => '分類名稱必填',
+         ];
+
+        $validator = Validator::make($input, $rules, $messages);
+        if ($validator->passes()) {
+            $result = Category::create($input);
+            if ($result) {
+                return redirect('admin/category');
+            } else {
+                return back()->with('errors', '資料寫入錯誤');
+            }
+        } else {
+            return back()->withErrors($validator);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -59,7 +82,7 @@ class CategoryController extends CommonController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -70,8 +93,8 @@ class CategoryController extends CommonController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -82,7 +105,7 @@ class CategoryController extends CommonController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
