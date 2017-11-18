@@ -139,7 +139,21 @@ class CategoryController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        $result = Category::where('category_id', $id)->delete();
+        // 更新原本屬於這個分類下的子分類為最頂級分類
+        Category::where('category_pid', $id)->update(['category_pid'=> '0']);
+        if ($result) {
+            $data = [
+                'status' => 0,
+                'msg' => '分類刪除成功'
+            ];
+        } else {
+            $data = [
+                'status' => 1,
+                'msg' => '分類刪除失敗',
+            ];
+        }
+        return $data;
     }
 
 

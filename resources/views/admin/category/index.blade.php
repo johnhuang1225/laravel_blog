@@ -34,14 +34,13 @@
     <form action="#" method="post">
         <div class="result_wrap">
             <div class="result_title">
-                <h3>快捷操作</h3>
+                <h3>分類管理</h3>
             </div>
             <!--快速導航 開始-->
             <div class="result_content">
                 <div class="short_wrap">
-                    <a href="#"><i class="fa fa-plus"></i>新增文章</a>
-                    <a href="#"><i class="fa fa-recycle"></i>批次删除</a>
-                    <a href="#"><i class="fa fa-refresh"></i>更新排序</a>
+                    <a href="{{url('/admin/category/create')}}"><i class="fa fa-plus"></i>增加分類</a>
+                    <a href="{{url('/admin/category')}}"><i class="fa fa-recycle"></i>全部分類</a>
                 </div>
             </div>
             <!--快速導航 結束-->
@@ -76,7 +75,7 @@
                         <td>{{$v->category_views}}</td>
                         <td>
                             <a href="{{url('/admin/category/'.$v->category_id.'/edit')}}">修改</a>
-                            <a href="#">删除</a>
+                            <a href="javascript:void(0);" onclick="deleteConfirm({{$v->category_id}});">删除</a>
                         </td>
                     </tr>
                     @endforeach
@@ -84,35 +83,6 @@
 
                 </table>
 
-
-<div class="page_nav">
-<div>
-<a class="first" href="/wysls/index.php/Admin/Tag/index/p/1.html">第一頁</a>
-<a class="prev" href="/wysls/index.php/Admin/Tag/index/p/7.html">上一頁</a>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/6.html">6</a>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/7.html">7</a>
-<span class="current">8</span>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/9.html">9</a>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/10.html">10</a> 
-<a class="next" href="/wysls/index.php/Admin/Tag/index/p/9.html">下一頁</a>
-<a class="end" href="/wysls/index.php/Admin/Tag/index/p/11.html">最後一頁</a>
-<span class="rows">11 條紀錄</span>
-</div>
-</div>
-
-
-
-                <div class="page_list">
-                    <ul>
-                        <li class="disabled"><a href="#">&laquo;</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </form>
@@ -135,6 +105,26 @@
                         }
                     }
             );
+        }
+
+        function deleteConfirm($id) {
+            layer.confirm('確定刪除這個分類嗎？', {
+                btn: ['確定','取消'] //按钮
+            }, function(){
+                $.post("{{url('/admin/category')}}/" + $id,
+                        {"_token":"{{csrf_token()}}", "_method": "delete"},
+                        function(data){
+                            if (data.status==0) {
+                                location.href = location.href;
+                                layer.msg(data.msg, {icon: 6});
+                            } else {
+                                layer.msg(data.msg, {icon: 5});
+                            }
+                        }
+                );
+            }, function(){
+
+            });
         }
     </script>
 
