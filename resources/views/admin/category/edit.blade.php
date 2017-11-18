@@ -35,17 +35,21 @@
     <!--結果集標題與導航元件 結束-->
     
     <div class="result_wrap">
-        <form action="{{url('/admin/category')}}" method="post">
+        <form action="{{url('/admin/category/'.$category->category_id)}}" method="post">
             {{csrf_field()}}
+            <input type="hidden" name="_method" value="put">
             <table class="add_tab">
                 <tbody>
                     <tr>
                         <th width="120"><i class="require">*</i>上層分類：</th>
                         <td>
                             <select name="category_pid">
-                                <option value="0">==頂級分類==</option>
-                                @foreach($categorys as $category)
-                                <option value="{{$category->category_id}}">{{$category->category_name}}</option>
+                                <option value=""></option>
+                                @foreach($categorys as $c)
+                                <option value="{{$c->category_id}}"
+                                    @if($category->category_pid==$c->category_id) selected @endif>
+                                    {{$c->category_name}}
+                                </option>
                                 @endforeach
                             </select>
                         </td>
@@ -53,31 +57,31 @@
                     <tr>
                         <th>分類名稱：</th>
                         <td>
-                            <input type="text" name="category_name">
+                            <input type="text" name="category_name" value="{{$category->category_name}}">
                         </td>
                     </tr>
                     <tr>
                         <th><i class="require">*</i>標題：</th>
                         <td>
-                            <input type="text" class="lg" name="category_title">
+                            <input type="text" class="lg" name="category_title" value="{{$category->category_title}}">
                         </td>
                     </tr>
                     <tr>
                         <th>關鍵字：</th>
                         <td>
-                            <input type="text" name="category_keywords">
+                            <input type="text" name="category_keywords" value="{{$category->category_keywords}}">
                         </td>
                     </tr>
                     <tr>
                         <th>描述：</th>
                         <td>
-                            <textarea name="category_description"></textarea>
+                            <textarea name="category_description">{{$category->category_description}}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <th><i class="require">*</i>排序</th>
                         <td>
-                            <input type="text" name="category_order">
+                            <input type="text" name="category_order" value="{{$category->category_order}}">
                         </td>
                     </tr>
                     <tr>

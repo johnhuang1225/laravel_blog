@@ -87,7 +87,12 @@ class CategoryController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $categorys = Category::where('category_pid', 0)->get();
+        $category = Category::find($id);
+        return view('admin.category.edit', [
+            'categorys' => $categorys,
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -99,7 +104,31 @@ class CategoryController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = Input::except('_token', '_method');
+
+        $rules = [
+            'category_pid' => 'required',
+            'category_name' => 'required',
+            'category_title' => 'required',
+        ];
+
+        $messages = [
+            'category_pid.required' => '上層分類必選',
+            'category_name.required' => '分類名稱必填',
+            'category_title.required' => '分類標題必填',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+        if ($validator->passes()) {
+            $result = Category::where('category_id', $id)->update($input);
+            if ($result) {
+                return redirect('admin/category');
+            } else {
+                return back()->with('errors', '資料更新錯誤');
+            }
+        } else {
+            return back()->withErrors($validator);
+        }
     }
 
     /**
