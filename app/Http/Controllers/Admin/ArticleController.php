@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\CommonController;
+use App\Http\Model\Category;
 use Illuminate\Http\Request;
 
 class ArticleController extends CommonController
@@ -24,7 +25,7 @@ class ArticleController extends CommonController
      */
     public function create()
     {
-        $categorys = [];
+        $categorys = (new Category)->tree();
         return view('admin.article.create', [
             'categorys' => $categorys,
         ]);
