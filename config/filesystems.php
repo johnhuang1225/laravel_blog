@@ -54,6 +54,11 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+        // add for CommonController ajax upload file
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path(). '/uploads',
+        ],
 
         's3' => [
             'driver' => 's3',
