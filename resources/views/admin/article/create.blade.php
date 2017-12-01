@@ -34,7 +34,7 @@
     <!--結果集標題與導航元件 結束-->
 
     <div class="result_wrap">
-        <form action="{{url('/admin/category')}}" method="post">
+        <form action="{{url('/admin/article')}}" method="post">
             {{csrf_field()}}
             <table class="add_tab">
                 <tbody>
@@ -83,7 +83,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>文章內容：</th>
+                    <th><i class="require">*</i>文章內容：</th>
                     <td>
                         <script type="text/javascript" charset="utf-8" src="{{asset('ueditor/ueditor.config.js')}}"></script>
                         <script type="text/javascript" charset="utf-8" src="{{asset('ueditor/ueditor.all.min.js')}}"> </script>
